@@ -12,7 +12,7 @@
           <el-select v-model="searchForm.role" placeholder="请选择角色" clearable>
             <el-option label="管理员" value="ADMIN" />
             <el-option label="教师" value="TEACHER" />
-            <el-option label="学生" value="STUDENT" />
+<!--            <el-option label="学生" value="STUDENT" />-->
             <el-option label="家长" value="PARENT" />
           </el-select>
         </el-form-item>
@@ -30,7 +30,7 @@
           <template #default="{ row }">
             <el-tag v-if="row.role === 'ADMIN'" type="danger">管理员</el-tag>
             <el-tag v-else-if="row.role === 'TEACHER'" type="primary">教师</el-tag>
-            <el-tag v-else-if="row.role === 'STUDENT'" type="success">学生</el-tag>
+<!--            <el-tag v-else-if="row.role === 'STUDENT'" type="success">学生</el-tag>-->
             <el-tag v-else type="warning">家长</el-tag>
           </template>
         </el-table-column>
@@ -80,7 +80,7 @@
           <el-select v-model="formData.role" placeholder="请选择角色">
             <el-option label="管理员" value="ADMIN" />
             <el-option label="教师" value="TEACHER" />
-            <el-option label="学生" value="STUDENT" />
+<!--            <el-option label="学生" value="STUDENT" />-->
             <el-option label="家长" value="PARENT" />
           </el-select>
         </el-form-item>

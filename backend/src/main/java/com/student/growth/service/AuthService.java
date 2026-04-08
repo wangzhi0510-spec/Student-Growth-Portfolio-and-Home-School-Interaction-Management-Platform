@@ -35,12 +35,15 @@ public class AuthService {
         if (user == null) {
             throw new RuntimeException("用户不存在");
         }
+        // 使用密码编码器进行密文比对
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("密码错误");
         }
+        //判断状态是否正常(有没有被管理员禁用)
         if (user.getStatus() == 0) {
             throw new RuntimeException("账号已被禁用");
         }
+        // 校验通过，利用 JwtUtil 生成包含角色的无状态 Token
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole());
         LoginResponse response = new LoginResponse();
         response.setToken(token);
