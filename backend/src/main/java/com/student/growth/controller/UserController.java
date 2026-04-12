@@ -29,16 +29,18 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // 获取合法教师列表逻辑（用于班级下拉选择框）
     @GetMapping("/list/teacher")
     public Result<List<User>> getTeacherList() {
         List<User> teachers = userService.list(new LambdaQueryWrapper<User>()
-                .eq(User::getRole, "TEACHER")
-                .eq(User::getStatus, 1)
+                .eq(User::getRole, "TEACHER")// 严格限定角色为教师
+                .eq(User::getStatus, 1)      // 限定状态为1（已启用）
                 .orderByDesc(User::getCreateTime));
         teachers.forEach(user -> user.setPassword(null));
         return Result.success(teachers);
     }
 
+    // 用户分页查询与脱敏处理逻辑
     @GetMapping("/page")
     @PreAuthorize("hasRole('ADMIN')")
     public Result<Page<User>> getUserPage(
@@ -47,11 +49,13 @@ public class UserController {
             @RequestParam(required = false) String role) {
         Page<User> page = new Page<>(current, size);
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        // 动态判断前端是否传来了角色筛选条件
         if (role != null && !role.isEmpty()) {
             wrapper.eq(User::getRole, role);
         }
         wrapper.orderByDesc(User::getCreateTime);
         Page<User> result = userService.page(page, wrapper);
+        // 数据脱敏：清空返回给前端的密码字段
         result.getRecords().forEach(user -> user.setPassword(null));
         return Result.success(result);
     }
@@ -122,8 +126,11 @@ public class UserController {
         return Result.success();
     }
 
+    // 用户个人资料更新逻辑
     @PutMapping("/profile")
     public Result<Void> updateProfile(@RequestBody User user) {
+        // 接收前端传来的只包含需要修改字段的 User 对象
+        // 使用 MyBatis-Plus 的 updateById 进行动态更新
         userService.updateById(user);
         return Result.success();
     }

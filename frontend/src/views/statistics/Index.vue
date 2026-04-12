@@ -35,7 +35,11 @@
           </template>
           <el-table :data="scoreStatistics" border>
             <el-table-column prop="subject" label="科目" width="120" />
-            <el-table-column prop="average" label="平均分" width="100" />
+            <el-table-column label="平均分" width="100">
+              <template #default="{ row }">
+                {{ row.average.toFixed(2) }}
+              </template>
+            </el-table-column>
             <el-table-column prop="max" label="最高分" width="100" />
             <el-table-column prop="min" label="最低分" width="100" />
             <el-table-column prop="count" label="考试次数" width="100" />
