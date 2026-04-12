@@ -67,7 +67,7 @@ public class StudentInfoService extends ServiceImpl<StudentInfoMapper, StudentIn
         }
         wrapper.orderByDesc(StudentInfo::getCreateTime);
         Page<StudentInfo> result = page(page, wrapper);
-        
+        // 性能优化重难点：在内存中遍历回填 className，避免数据库全表 JOIN 锁表风险
         result.getRecords().forEach(student -> {
             // Only fill if className is missing (optimization for denormalized schema)
             if (student.getClassName() == null && student.getClassId() != null) {

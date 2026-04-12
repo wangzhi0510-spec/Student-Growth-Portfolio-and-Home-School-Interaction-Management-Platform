@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Service
 public class MessageService extends ServiceImpl<MessageMapper, Message> {
-
+    // 分页获取当前用户收到的消息（收件箱）
     public Page<Message> getReceivedMessages(Long receiverId, Integer current, Integer size) {
         Page<Message> page = new Page<>(current, size);
         LambdaQueryWrapper<Message> wrapper = new LambdaQueryWrapper<>();
@@ -28,11 +28,12 @@ public class MessageService extends ServiceImpl<MessageMapper, Message> {
         return page(page, wrapper);
     }
 
+    // 标记消息为已读并记录精准阅读时间
     public void markAsRead(Long messageId) {
         Message message = getById(messageId);
         if (message != null) {
-            message.setIsRead(1);
-            message.setReadTime(LocalDateTime.now());
+            message.setIsRead(1);// 1表示已读
+            message.setReadTime(LocalDateTime.now());// 记录发生阅读的具体时间
             updateById(message);
         }
     }

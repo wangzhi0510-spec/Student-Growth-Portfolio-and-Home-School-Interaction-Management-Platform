@@ -149,15 +149,17 @@ const fetchData = async () => {
 
 const handleAdd = () => {
   dialogTitle.value = '发布公告'
+  // 利用 Object.assign 对表单数据进行初始化与默认赋值
   Object.assign(formData, {
     id: null,
     title: '',
-    type: 'school', // 默认类型，虽然界面不显示，但后端可能需要
+    type: 'school', // 默认类型，虽然界面不显示，但后端需要
     targetType: 'all', // 默认全校通知
     targetId: null,
     priority: 1,
     content: ''
   })
+  // 唤起前端 Dialog 弹窗
   dialogVisible.value = true
 }
 
